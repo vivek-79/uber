@@ -3,12 +3,23 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import LocationSerPanel from '../components/LocationSerPanel'
 import 'remixicon/fonts/remixicon.css'
+import VehiclePanel from '../components/VehiclePanel'
+import SelectedVehicle from '../components/SelectedVehicle'
+import LookingforDriver from '../components/LookingforDriver'
+import WaitforDriver from '../components/WaitingforDriver'
 
 function Home() {
 
   const pannelRef = useRef(null)
+  const vehiclepannelRef = useRef(null)
+  const confirmedVehicleRef = useRef(null)
+  const vehicleFoundRef = useRef(null)
+  const WaitingforDriverRef = useRef(null)
   const [top, setTop] = useState(false)
-
+  const[vehiclePanel,setVehiclePanel]=useState(false)
+  const[confirmedVehicle,setConfirmedVehicle]=useState(false)
+  const[vehicleFound,setVehicleFound]=useState(false)
+  const[WaitingforDriver,setWaitingforDriver]=useState(false)
   useGSAP(function () {
 
     if (top) {
@@ -24,6 +35,54 @@ function Home() {
       })
     }
   }, [top])
+
+  useGSAP(function(){
+    if(confirmedVehicle){
+      gsap.to(confirmedVehicleRef.current,{
+        transform:'translateY(0)'
+      })
+    }else{
+      gsap.to(confirmedVehicleRef.current,{
+        transform:'translateY(100%)'
+      })
+    }
+  },[confirmedVehicle])
+
+  useGSAP(function(){
+    if(vehiclePanel){
+      gsap.to(vehiclepannelRef.current,{
+        transform:'translateY(0)'
+      })
+    }else{
+      gsap.to(vehiclepannelRef.current,{
+        transform:'translateY(100%)'
+      })
+    }
+  },[vehiclePanel])
+
+  useGSAP(function(){
+    if(vehicleFound){
+      gsap.to(vehicleFoundRef.current,{
+        transform:'translateY(0)'
+      })
+    }else{
+      gsap.to(vehicleFoundRef.current,{
+        transform:'translateY(100%)'
+      })
+    }
+  },[vehicleFound])
+
+  useGSAP(function(){
+    if(WaitingforDriver){
+      gsap.to(WaitingforDriverRef.current,{
+        transform:'translateY(0)'
+      })
+    }else{
+      gsap.to(WaitingforDriverRef.current,{
+        transform:'translateY(100%)'
+      })
+    }
+  },[WaitingforDriver])
 
   return (
     <div className='w-full h-screen relative'>
@@ -43,39 +102,21 @@ function Home() {
           </form>
         </div>
         <div ref={pannelRef} className='w-full h-[70%] bg-white px-2'>
-          <LocationSerPanel />
+          <LocationSerPanel  setVehiclePanel={setVehiclePanel} setTop={setTop} />
         </div>
       </div>
 
-      <div className='fixed w-full z-10 bg-white bottom-0 py-3 px-6 translate-y-full'>
-        <h3 className='text-2xl font-semibold mb-2'>Choose a vehicle</h3>
-        <div className='flex border-2 active:border-black  rounded-xl p-3 w-full items-center justify-between mb-2'>
-          <img className='h-14 ' src="https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?semt=ais_hybrid" alt="car" />
-          <div className=' w-1/2'>
-            <h4 className='font-medium text-base'>UberGo <span><i className="ri-user-3-fill"></i>4</span></h4>
-            <h5 className='font-medium text-sm'>2 mins away</h5>
-            <p className='font-normal text-xs text-gray-600'>Affordable, compact rides</p>
-          </div>
-          <h2 className='text-lg font-semibold'>$192</h2>
-        </div>
-        <div className='flex border-2 active:border-black  rounded-xl p-3 w-full items-center justify-between mb-2'>
-          <img className='h-14 w-16' src="https://imgs.search.brave.com/0nb_ofiFEa_gEO6sTemQo-Mvs_aDHjRzNC_DjRB3CCg/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9wbHVz/cG5nLmNvbS9pbWct/cG5nL3BuZy1oZC1i/aWtlLW1vdG9yYmlr/ZS1oZC1wbmctcGx1/c3BuZy1jb20tMTYz/Mi1tb3RvcmJpa2Ut/aGQtcG5nLTE2MzIu/cG5n" alt="bike" />
-          <div className=' w-1/2'>
-            <h4 className='font-medium text-base'>UberGo <span><i className="ri-user-3-fill"></i>1</span></h4>
-            <h5 className='font-medium text-sm'>2 mins away</h5>
-            <p className='font-normal text-xs text-gray-600'>Affordable, motorcycle rides</p>
-          </div>
-          <h2 className='text-lg font-semibold'>$65</h2>
-        </div>
-        <div className='flex border-2 active:border-black  rounded-xl p-3 w-full items-center justify-between mb-2'>
-          <img className='h-14 w-16' src="https://imgs.search.brave.com/RHpGuzSWfShl1C88lkLShQ5rP5dajCxVj81xW6cn3Sk/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nbWFydC5jb20v/ZmlsZXMvNS9BdXRv/LVJpY2tzaGF3LVBO/Ry1GaWxlLnBuZw" alt="bike" />
-          <div className=' w-1/2'>
-            <h4 className='font-medium text-base'>UberGo <span><i className="ri-user-3-fill"></i>3</span></h4>
-            <h5 className='font-medium text-sm'>2 mins away</h5>
-            <p className='font-normal text-xs text-gray-600'>Affordable, motorcycle rides</p>
-          </div>
-          <h2 className='text-lg font-semibold'>$118</h2>
-        </div>
+      <div ref={vehiclepannelRef} className='fixed w-full z-10 bg-white bottom-0 text-2xl px-6'>
+        <VehiclePanel setConfirmedVehicle={setConfirmedVehicle} setVehiclePanel={setVehiclePanel}/>
+      </div>
+      <div ref={confirmedVehicleRef} className='fixed w-full z-10 bg-white bottom-0 text-2xl pb-6 px-3'>
+        <SelectedVehicle  setConfirmedVehicle={setConfirmedVehicle} setVehicleFound={setVehicleFound}/>
+      </div>
+      <div ref={vehicleFoundRef} className='fixed w-full z-10 bg-white bottom-0 text-2xl pb-6 px-3'>
+       <LookingforDriver  setVehicleFound={setVehicleFound}/>
+      </div>
+      <div ref={WaitingforDriverRef} className='fixed w-full z-10 bg-white bottom-0 text-2xl pb-6 px-3'>
+       <WaitforDriver setVehicleFound={setVehicleFound}/>
       </div>
     </div>
   )
